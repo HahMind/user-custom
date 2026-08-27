@@ -21,6 +21,22 @@ const Home = () => {
     });
   };
 
+  const handleAddUser = () => {
+    const newUser = {
+      id: Date.now(),
+      name: "New User",
+      email: "newuser@example.com",
+    }
+    swal({
+      title: "เพิ่มผู้ใช้สำเร็จ",
+      text: "เพิ่มผู้ใช้เรียบร้อยแล้ว",
+      icon: "success",
+      timer: 1000,
+      buttons: false
+    });
+    setUsers([...users, newUser]);
+  };
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -38,7 +54,7 @@ const Home = () => {
 
   return (
     <div className="dark:bg-blue-900 min-h-screen transition-all duration-[500ms] ease-in-out">
-      <SettingMenu setCardLayout={setCardLayout} />
+      <SettingMenu setCardLayout={setCardLayout} handleAddUser={handleAddUser} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
         {users.map((user) => (

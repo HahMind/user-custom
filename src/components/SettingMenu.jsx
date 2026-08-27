@@ -5,15 +5,16 @@ import ToggleThemeButton from "./ToggleThemeButton";
 import SelectLayoutButton from "./SelectLayoutButton";
 import SelectFontSize from "./SelectFontSize";
 import FontSizeOption from "./FontSizeOption";
+import AddUser from "./AddUser";
 
-const SettingMenu = ({ setCardLayout }) => {
+const SettingMenu = ({ setCardLayout, handleAddUser }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLayoutMenuOpen, setIsLayoutMenuOpen] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [isFontSizeMenuOpen, setIsFontSizeMenuOpen] = useState(false);
 
   return (
-    <div >
+    <div>
       {/* Setting Button */}
       <button
         onClick={() => {
@@ -33,7 +34,6 @@ const SettingMenu = ({ setCardLayout }) => {
               setIsLayoutMenuOpen={setIsLayoutMenuOpen}
               isLayoutMenuOpen={isLayoutMenuOpen}
               setIsFontSizeMenuOpen={setIsFontSizeMenuOpen}
-
             />
           </div>
 
@@ -67,10 +67,16 @@ const SettingMenu = ({ setCardLayout }) => {
               </div>
             </div>
 
+            {/* Add User Button */}
+            <div className="flex justify-center items-center p-2 w-full">
+              <AddUser handleAddUser={handleAddUser} />
+            </div>
+
             {/* Theme Toggle Button */}
             <div className="flex justify-center items-center p-2 w-full">
               <ToggleThemeButton toggleTheme={toggleTheme} theme={theme} />
             </div>
+
           </div>
         </div>
       )}
