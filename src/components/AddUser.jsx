@@ -4,7 +4,7 @@ const AddUser = ({handleAddUser}) => {
   return (
     <button 
     type='button'
-     className='bg-blue-500 px-4 py-2 rounded-lg text-white w-full'
+     className='bg-green-400 px-4 py-2 w-full rounded-full text-white '
      onClick={handleAddUser}
      >
       เพิ่มผู้ใช้

@@ -18,7 +18,7 @@ const UserCard = ({ user, layout, handleDeleteUser }) => {
       <img
         src={`https://i.pravatar.cc/150?img=${user.id}`}
         alt="profile"
-        className="text-xs  w-12 h-12 rounded-full bg-blue-500"
+        className="text-xs  w-12 h-12 rounded-full bg-blue-500 hover:scale-[10] z-40"
       />
       <div className="flex flex-col">
         <p className={`${fontSize} font-bold `}>Name: {user.name}</p>
