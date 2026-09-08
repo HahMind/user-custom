@@ -66,7 +66,7 @@ const SettingMenu = ({ setCardLayout, handleAddUser, setViewMode }) => {
           </div>
           {/* Type Options */}
           <div
-            className={`grid rounded-md ${isTypesMenuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} transition-all duration-500 ease-in-out `}
+            className={`grid rounded-md transition-all duration-500 ease-in-out ${isTypesMenuOpen ? "grid-rows-[1fr]  w-full"  : "grid-rows-[0fr] "}      `}
           >
             <TypesOption setViewMode={setViewMode} />
           </div>
