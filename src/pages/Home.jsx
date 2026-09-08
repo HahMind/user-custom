@@ -5,12 +5,15 @@ import swal from "sweetalert";
 import ToggleThemeButton from "../components/ToggleThemeButton";
 import { ThemeContext } from "../context/ThemeContext";
 import UserDetail from "../components/UserDetail";
+import { SettingsContext } from "../context/SettingsContext";
+
 
 const Home = () => {
   const [users, setUsers] = useState([]);
   const [cardLayout, setCardLayout] = useState("top");
   const [viewMode, setViewMode] = useState("grid");
   const [selectedUser, setSelectedUser] = useState(null);
+  const { fontSize } = useContext(SettingsContext);
 
   const handleSelectUser = (user) => {
     if (selectedUser === user) {
@@ -23,17 +26,17 @@ const Home = () => {
   const handleGoBack = () => {
     setViewMode("grid");
   };
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape" && viewMode !== "grid") {
-        handleGoBack();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [viewMode]);
+  // useEffect(() => {
+  //   const handleKeyDown = (e) => {
+  //     if (e.key === "Escape" && viewMode !== "grid") {
+  //       handleGoBack();
+  //     }
+  //   };
+  //   window.addEventListener("keydown", handleKeyDown);
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, [viewMode]);
 
   const handleDeleteUser = (userId) => {
     setUsers(users.filter((user) => user.id !== userId));
@@ -118,16 +121,16 @@ const Home = () => {
                 <div
                   key={user.id}
                   onClick={() => handleSelectUser(user)}
-                  className={`p-3 rounded-lg cursor-pointer transition-colors ${selectedUser?.id === user.id ? "bg-blue-500 text-white" : "bg-white dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:bg-gray-600"}`}
+                  className={`p-3 rounded-lg cursor-pointer transition-colors  ${selectedUser?.id === user.id ? "bg-blue-500 text-white" : "bg-white dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-100  "}   ${fontSize}`}
                 >
                   <p className="font-semibold">{user.name}</p>
-                  <p className="text-xs dark:text-white ">{user.email}</p>
+                  <p className="text-xs dark:text-white overflow-x-auto ">{user.email}</p>
                 </div>
               ))}
             </div>
 
             {/* ซีกขวา */}
-            <div className="w-2/3 bg-white dark:bg-gray-700 rounded-lg p-6 flex flex-col gap-4 items-center justify-center">
+            <div className="w-2/3 bg-white dark:bg-gray-700 rounded-lg p-6 flex flex-col gap-4 items-center justify-center ">
               {selectedUser ? (
                 <UserDetail 
                   selectedUser={selectedUser}
