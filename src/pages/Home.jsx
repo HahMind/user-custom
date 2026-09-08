@@ -14,6 +14,9 @@ const Home = () => {
   const [viewMode, setViewMode] = useState("grid");
   const [selectedUser, setSelectedUser] = useState(null);
   const { fontSize } = useContext(SettingsContext);
+  const handleUpdateUser = (updatedUser) => {
+    setUsers(users.map((user) => (user.id === updatedUser.id ? updatedUser : user)));
+  }
 
   const handleSelectUser = (user) => {
     if (selectedUser === user) {
@@ -135,6 +138,7 @@ const Home = () => {
                 <UserDetail 
                   selectedUser={selectedUser}
                   setSelectedUser={setSelectedUser}
+                  handleUpdateUser={handleUpdateUser}
                 />
               ) : (
                 <div>โปรดเลือกผู้ใช้จากรายชื่อด้านซ้าย</div>

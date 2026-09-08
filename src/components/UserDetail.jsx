@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import swal from "sweetalert";
 
-const UserDetail = ({ selectedUser, setSelectedUser }) => {
+const UserDetail = ({ selectedUser, setSelectedUser, handleUpdateUser }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState(selectedUser);
 
@@ -20,7 +21,7 @@ const UserDetail = ({ selectedUser, setSelectedUser }) => {
       {/* รูปโปรไฟล์ */}
       <div className="flex flex-col items-center w-full max-w-md">
         <img
-          src={`https://i.pravatar.cc/150?img=${selectedUser.id}`}
+          src={selectedUser.image || `https://i.pravatar.cc/150?img=${selectedUser.id}`}
           alt="Profile"
           className="w-32 h-32 rounded-full border-4 border-blue-500 mb-6 shadow-lg"
         />
@@ -173,7 +174,14 @@ const UserDetail = ({ selectedUser, setSelectedUser }) => {
       {/* ปุ่มแก้ไข, บันทึก, ยกเลิก */}
       {isEditing ? (
         <div className="flex gap-2 mt-4">
-          <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded  ">
+          <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded  "
+          onClick={() => {
+            handleUpdateUser(editedData);
+            setSelectedUser(editedData);
+            setIsEditing(false);
+            swal("สำเร็จ", "บันทึกข้อมูลเรียบร้อยแล้ว", "success");
+          }}
+          >
             บันทึกข้อมูล
           </button>
 
