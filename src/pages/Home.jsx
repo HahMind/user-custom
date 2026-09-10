@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import UserCard from "../components/UserCard";
 import SettingMenu from "../components/SettingMenu";
 import swal from "sweetalert";
-import ToggleThemeButton from "../components/ToggleThemeButton";
-import { ThemeContext } from "../context/ThemeContext";
 import UserDetail from "../components/UserDetail";
 import { SettingsContext } from "../context/SettingsContext";
+import HeaderContext from "../components/HeaderContext";
+
 
 
 const Home = () => {
@@ -15,8 +15,10 @@ const Home = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const { fontSize } = useContext(SettingsContext);
   const handleUpdateUser = (updatedUser) => {
-    setUsers(users.map((user) => (user.id === updatedUser.id ? updatedUser : user)));
-  }
+    setUsers(
+      users.map((user) => (user.id === updatedUser.id ? updatedUser : user)),
+    );
+  };
 
   const handleSelectUser = (user) => {
     if (selectedUser === user) {
@@ -86,6 +88,7 @@ const Home = () => {
 
   return (
     <div>
+      <HeaderContext />
       <SettingMenu
         setCardLayout={setCardLayout}
         handleAddUser={handleAddUser}
@@ -127,7 +130,9 @@ const Home = () => {
                   className={`p-3 rounded-lg cursor-pointer transition-colors  ${selectedUser?.id === user.id ? "bg-blue-500 text-white" : "bg-white dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-100  "}   ${fontSize}`}
                 >
                   <p className="font-semibold">{user.name}</p>
-                  <p className="text-xs dark:text-white overflow-x-auto ">{user.email}</p>
+                  <p className="text-xs dark:text-white overflow-x-auto ">
+                    {user.email}
+                  </p>
                 </div>
               ))}
             </div>
@@ -135,7 +140,7 @@ const Home = () => {
             {/* ซีกขวา */}
             <div className="w-2/3 bg-white dark:bg-gray-700 rounded-lg p-6 flex flex-col gap-4 items-center justify-center ">
               {selectedUser ? (
-                <UserDetail 
+                <UserDetail
                   selectedUser={selectedUser}
                   setSelectedUser={setSelectedUser}
                   handleUpdateUser={handleUpdateUser}
