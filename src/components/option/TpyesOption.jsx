@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { SettingsContext } from "../context/SettingsContext";
+import { SettingsContext } from "../../context/SettingsContext";
 
 const TypesOption = ({ setViewMode }) => {
   const handleChangeViewMode = (mode) => {

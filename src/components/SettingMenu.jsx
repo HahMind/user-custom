@@ -2,19 +2,22 @@ import { useState, useContext } from "react";
 import LayoutButton from "./LayoutButton";
 import { ThemeContext } from "../context/ThemeContext";
 import ToggleThemeButton from "./ToggleThemeButton";
-import SelectLayoutButton from "./SelectLayoutButton";
-import SelectFontSize from "./SelectFontSize";
-import FontSizeOption from "./FontSizeOption";
+import SelectLayoutButton from "./select/SelectLayoutButton";
+import SelectFontSize from "./select/SelectFontSize";
+import FontSizeOption from "./option/FontSizeOption";
 import AddUser from "./AddUser";
-import SelectTypes from "./SelectTypes";
-import TypesOption from "./TpyesOption";
+import SelectTypes from "./select/SelectTypes";
+import TypesOption from "./option/TpyesOption";
+import SelectHeader from "./select/SelectHeader";
+import HeaderOption from "./option/HeaderOption";
 
 const SettingMenu = ({ setCardLayout, handleAddUser, setViewMode }) => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
   const [isLayoutMenuOpen, setIsLayoutMenuOpen] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext);
   const [isFontSizeMenuOpen, setIsFontSizeMenuOpen] = useState(false);
   const [isTypesMenuOpen, setIsTypesMenuOpen] = useState(false);
+  const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
 
   return (
     <div>
@@ -25,6 +28,7 @@ const SettingMenu = ({ setCardLayout, handleAddUser, setViewMode }) => {
           setIsLayoutMenuOpen(false);
           setIsFontSizeMenuOpen(false);
           setIsTypesMenuOpen(false);
+          setIsHeaderMenuOpen(false);
         }}
         className="h-12 w-12 rounded-full fixed bottom-5 right-5 bg-blue-500 z-50"
       >
@@ -34,6 +38,28 @@ const SettingMenu = ({ setCardLayout, handleAddUser, setViewMode }) => {
       {/* Layout Menu Button */}
       {isOpen && (
         <div className="flex flex-col items-end justify-end  fixed bottom-20 right-5 w-50  rounded-lg  shadow-2xl p-1  z-50">
+          {/* Header Selector */}
+          <div className="flex justify-center items-center p-2 w-full ">
+            <SelectHeader
+              isHeaderMenuOpen={isHeaderMenuOpen}
+              setIsHeaderMenuOpen={setIsHeaderMenuOpen}
+              setIsLayoutMenuOpen={setIsLayoutMenuOpen}
+              setIsFontSizeMenuOpen={setIsFontSizeMenuOpen}
+              setIsTypesMenuOpen={setIsTypesMenuOpen}
+            />
+          </div>
+          {/* Header Options */}
+          <div
+            className={`grid rounded-md transition-all duration-500 ease-in-out ${isHeaderMenuOpen ? "grid-rows-[1fr]  w-full" : "grid-rows-[0fr] "}      `}
+          >
+            <div className="overflow-hidden">
+              <div className=" p-2 mt-2">
+                <HeaderOption />
+              </div>
+            </div>
+          </div>
+
+          {/* Layout Selector */}
           <div className="flex justify-center items-center p-2 w-full ">
             <SelectLayoutButton
               setIsLayoutMenuOpen={setIsLayoutMenuOpen}
@@ -66,7 +92,7 @@ const SettingMenu = ({ setCardLayout, handleAddUser, setViewMode }) => {
           </div>
           {/* Type Options */}
           <div
-            className={`grid rounded-md transition-all duration-500 ease-in-out ${isTypesMenuOpen ? "grid-rows-[1fr]  w-full"  : "grid-rows-[0fr] "}      `}
+            className={`grid rounded-md transition-all duration-500 ease-in-out ${isTypesMenuOpen ? "grid-rows-[1fr]  w-full" : "grid-rows-[0fr] "}      `}
           >
             <TypesOption setViewMode={setViewMode} />
           </div>

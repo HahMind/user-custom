@@ -4,7 +4,7 @@ import SettingMenu from "../components/SettingMenu";
 import swal from "sweetalert";
 import UserDetail from "../components/UserDetail";
 import { SettingsContext } from "../context/SettingsContext";
-import HeaderContext from "../components/HeaderContext";
+import Header from "../components/Header";
 
 
 
@@ -88,7 +88,7 @@ const Home = () => {
 
   return (
     <div>
-      <HeaderContext />
+      <Header />
       <SettingMenu
         setCardLayout={setCardLayout}
         handleAddUser={handleAddUser}
