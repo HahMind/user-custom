@@ -1,18 +1,12 @@
-import React from "react";
+import React, { act } from "react";
 
-const SelectLayoutButton = ({
-  setIsLayoutMenuOpen,
-  isLayoutMenuOpen,
-  setIsFontSizeMenuOpen,
-  setIsTypesMenuOpen,
-}) => {
+const SelectLayoutButton = ({ activeMenu, setActiveMenu }) => {
   return (
     <div className="flex justify-center items-center  w-full">
       <button
         onClick={() => {
-          setIsLayoutMenuOpen(!isLayoutMenuOpen);
-          setIsFontSizeMenuOpen(false);
-          setIsTypesMenuOpen(false);
+          setActiveMenu(activeMenu === "layout" ? null : "layout");
+          console.log("กด L แล้ว");
         }}
         className="bg-blue-500 px-4 py-2 rounded-md text-white font-bold w-full"
       >

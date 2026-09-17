@@ -7,17 +7,15 @@ import SelectFontSize from "./select/SelectFontSize";
 import FontSizeOption from "./option/FontSizeOption";
 import AddUser from "./AddUser";
 import SelectTypes from "./select/SelectTypes";
-import TypesOption from "./option/TpyesOption";
+import TypesOption from "./option/TypesOption";
 import SelectHeader from "./select/SelectHeader";
 import HeaderOption from "./option/HeaderOption";
 
 const SettingMenu = ({ setCardLayout, handleAddUser, setViewMode }) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
-  const [isLayoutMenuOpen, setIsLayoutMenuOpen] = useState(false);
-  const [isFontSizeMenuOpen, setIsFontSizeMenuOpen] = useState(false);
-  const [isTypesMenuOpen, setIsTypesMenuOpen] = useState(false);
-  const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
+
+  const [activeMenu, setActiveMenu] = useState(null);
 
   return (
     <div>
@@ -25,10 +23,7 @@ const SettingMenu = ({ setCardLayout, handleAddUser, setViewMode }) => {
       <button
         onClick={() => {
           setIsOpen(!isOpen);
-          setIsLayoutMenuOpen(false);
-          setIsFontSizeMenuOpen(false);
-          setIsTypesMenuOpen(false);
-          setIsHeaderMenuOpen(false);
+          setActiveMenu(null); // ปิดเมนูอื่น ๆ เมื่อเปิดเมนู
         }}
         className="h-12 w-12 rounded-full fixed bottom-5 right-5 bg-blue-500 z-50"
       >
@@ -41,16 +36,13 @@ const SettingMenu = ({ setCardLayout, handleAddUser, setViewMode }) => {
           {/* Header Selector */}
           <div className="flex justify-center items-center p-2 w-full ">
             <SelectHeader
-              isHeaderMenuOpen={isHeaderMenuOpen}
-              setIsHeaderMenuOpen={setIsHeaderMenuOpen}
-              setIsLayoutMenuOpen={setIsLayoutMenuOpen}
-              setIsFontSizeMenuOpen={setIsFontSizeMenuOpen}
-              setIsTypesMenuOpen={setIsTypesMenuOpen}
+              activeMenu={activeMenu}
+              setActiveMenu={setActiveMenu}
             />
           </div>
           {/* Header Options */}
           <div
-            className={`grid rounded-md transition-all duration-500 ease-in-out ${isHeaderMenuOpen ? "grid-rows-[1fr]  w-full" : "grid-rows-[0fr] "}      `}
+            className={`grid rounded-md transition-all duration-500 ease-in-out ${activeMenu === "header" ? "grid-rows-[1fr]  w-full" : "grid-rows-[0fr] "}      `}
           >
             <div className="overflow-hidden">
               <div className=" p-2 mt-2">
@@ -62,16 +54,14 @@ const SettingMenu = ({ setCardLayout, handleAddUser, setViewMode }) => {
           {/* Layout Selector */}
           <div className="flex justify-center items-center p-2 w-full ">
             <SelectLayoutButton
-              setIsLayoutMenuOpen={setIsLayoutMenuOpen}
-              isLayoutMenuOpen={isLayoutMenuOpen}
-              setIsFontSizeMenuOpen={setIsFontSizeMenuOpen}
-              setIsTypesMenuOpen={setIsTypesMenuOpen}
+              activeMenu={activeMenu}
+              setActiveMenu={setActiveMenu}
             />
           </div>
 
           {/* Layout Options  */}
           <div
-            className={`grid rounded-md ${isLayoutMenuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} transition-all duration-500 ease-in-out  `}
+            className={`grid rounded-md ${activeMenu === "layout" ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} transition-all duration-500 ease-in-out  `}
           >
             <div className="overflow-hidden">
               <div className=" p-2 mt-2">
@@ -83,16 +73,13 @@ const SettingMenu = ({ setCardLayout, handleAddUser, setViewMode }) => {
           {/* Type Selector */}
           <div className="flex justify-center items-center p-2 w-full ">
             <SelectTypes
-              isTypesMenuOpen={isTypesMenuOpen}
-              setIsTypesMenuOpen={setIsTypesMenuOpen}
-              isLayoutMenuOpen={isLayoutMenuOpen}
-              setIsLayoutMenuOpen={setIsLayoutMenuOpen}
-              setIsFontSizeMenuOpen={setIsFontSizeMenuOpen}
+              activeMenu={activeMenu}
+              setActiveMenu={setActiveMenu}
             />
           </div>
           {/* Type Options */}
           <div
-            className={`grid rounded-md transition-all duration-500 ease-in-out ${isTypesMenuOpen ? "grid-rows-[1fr]  w-full" : "grid-rows-[0fr] "}      `}
+            className={`grid rounded-md transition-all duration-500 ease-in-out ${activeMenu === "types" ? "grid-rows-[1fr]  w-full" : "grid-rows-[0fr] "}      `}
           >
             <TypesOption setViewMode={setViewMode} />
           </div>
@@ -100,16 +87,14 @@ const SettingMenu = ({ setCardLayout, handleAddUser, setViewMode }) => {
           {/* Font Size Button */}
           <div className="flex justify-center items-center p-2 w-full">
             <SelectFontSize
-              isFontSizeMenuOpen={isFontSizeMenuOpen}
-              setIsFontSizeMenuOpen={setIsFontSizeMenuOpen}
-              setIsLayoutMenuOpen={setIsLayoutMenuOpen}
-              setIsTypesMenuOpen={setIsTypesMenuOpen}
+              activeMenu={activeMenu}
+              setActiveMenu={setActiveMenu}
             />
           </div>
 
           {/* Font Size Options */}
           <div
-            className={`grid rounded-md ${isFontSizeMenuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} transition-all duration-500 ease-in-out `}
+            className={`grid rounded-md ${activeMenu === "fontSize" ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} transition-all duration-500 ease-in-out `}
           >
             <div className="overflow-hidden">
               <div className=" p-2 mt-2">

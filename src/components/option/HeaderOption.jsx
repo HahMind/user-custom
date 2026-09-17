@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
-import LogoSizeOption from "./LogoSizOption";
+import LogoSizeOption from "./LogoSizeOption";
 import LogoPositionOption from "./LogoPositionOption";
 
 const HeaderOption = () => {

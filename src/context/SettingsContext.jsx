@@ -37,8 +37,6 @@ export const SettingsProvider = ({ children }) => {
         setLogoSize,
         logoPosition,
         changeLogoPosition,
-        changeFontSize,
-        changeHeaderType,
         navPosition,
         setNavPosition,
       }}
