@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import  { useState, useEffect, useContext, createRef } from "react";
 import UserCard from "../components/UserCard";
 import SettingMenu from "../components/SettingMenu";
 import swal from "sweetalert";
 import UserDetail from "../components/UserDetail";
 import { SettingsContext } from "../context/SettingsContext";
 import Header from "../components/Header";
-
 
 
 const Home = () => {
@@ -19,6 +18,8 @@ const Home = () => {
       users.map((user) => (user.id === updatedUser.id ? updatedUser : user)),
     );
   };
+  const [isPending, setIsPending] = useState(false);
+  const [isError, setIsError] = useState(null);
 
   const handleSelectUser = (user) => {
     if (selectedUser === user) {
@@ -43,44 +44,88 @@ const Home = () => {
   //   };
   // }, [viewMode]);
 
-  const handleDeleteUser = (userId) => {
-    setUsers(users.filter((user) => user.id !== userId));
+  const handleDeleteUser = async (userId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/employees/${userId}`,
+        {
+          method: "DELETE",
+        },
+      );
 
-    swal({
-      title: "ลบสำเร็จ",
-      text: "ลบผู้ใช้เรียบร้อยแล้ว",
-      icon: "success",
-      timer: 2000,
-      buttons: false,
-    });
+      if( !response.ok) {
+        throw new Error(`การลบผู้ใช้ล้มเหลว: ${response.status}`);
+      }
+       const data = await response.json();
+      console.log("หลังบ้านตอบกลับว่า : ", data);
+      setUsers(users.filter((user) => user.id !== userId));
+
+     
+      swal({
+        title: "ลบสำเร็จ",
+        text: "ลบผู้ใช้เรียบร้อยแล้ว",
+        icon: "success",
+        timer: 2000,
+        buttons: false,
+      });
+    } catch (error) {
+      console.log("การลบผิดพลาด :", error);
+    }
   };
 
-  const handleAddUser = () => {
+  const handleAddUser = async () => {
     const newUser = {
       id: Date.now(),
       name: "New User",
       email: "newuser@example.com",
     };
-    swal({
-      title: "เพิ่มผู้ใช้สำเร็จ",
-      text: "เพิ่มผู้ใช้เรียบร้อยแล้ว",
-      icon: "success",
-      timer: 1000,
-      buttons: false,
-    });
-    setUsers([...users, newUser]);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/employees", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
+
+      const data = await response.json();
+      console.log("หลังบ้านตอบกลับว่า : ", data);
+
+      setUsers([...users, newUser]);
+
+      swal({
+        title: "เพิ่มผู้ใช้สำเร็จ",
+        text: "เพิ่มผู้ใช้เรียบร้อยแล้ว",
+        icon: "success",
+        timer: 1000,
+        buttons: false,
+      });
+    } catch (error) {
+      console.error("ส่งข้อมูลผู้ใช้ล้มเหลว:", error);
+      swal({
+        title: "เกิดข้อผิดพลาด",
+        text: "ไม่สามารถเพิ่มผู้ใช้ได้",
+        icon: "error",
+        timer: 2000,
+        buttons: false,
+      });
+    }
   };
 
   useEffect(() => {
     const fetchUsers = async () => {
+      setIsPending(true);
+      setIsError(null);
       try {
-        const response = await fetch(
-          "https://jsonplaceholder.typicode.com/users",
-        );
+        const response = await fetch("http://localhost:3000/api/employees");
         const usersData = await response.json();
         setUsers(usersData);
       } catch (error) {
         console.error("Error fetching users:", error);
+        setIsError("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้");
+      } finally {
+        setIsPending(false);
       }
     };
     fetchUsers();
@@ -97,6 +142,14 @@ const Home = () => {
       {viewMode === "grid" ? (
         <div className="dark:bg-blue-900 min-h-screen transition-all duration-[500ms] ease-in-out">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+            {isPending && (
+              <p className="text-center dark:text-white">กำลังโหลดข้อมูล...</p>
+            )}
+            {isError && (
+              <p className="text-center relative top-56  text-red-500 text-2xl">
+                {isError}
+              </p>
+            )}
             {users.map((user) => (
               <UserCard
                 key={user.id}
@@ -109,6 +162,15 @@ const Home = () => {
         </div>
       ) : (
         <div>
+          {isPending && (
+            <p className="text-center dark:text-white">กำลังโหลดข้อมูล...</p>
+          )}
+          {isError && (
+            <p className="text-center relative top-56  text-red-500 text-2xl">
+              {isError}
+            </p>
+          )}
+
           {/* <header className="w-full flex justify-between items-center mb-4">
             <button
               onClick={handleGoBack}
