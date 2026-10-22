@@ -1,4 +1,4 @@
-import  { useState, useEffect, useContext, createRef } from "react";
+import { useState, useEffect, useContext, createRef } from "react";
 import UserCard from "../components/UserCard";
 import SettingMenu from "../components/SettingMenu";
 import swal from "sweetalert";
@@ -6,17 +6,45 @@ import UserDetail from "../components/UserDetail";
 import { SettingsContext } from "../context/SettingsContext";
 import Header from "../components/Header";
 
-
 const Home = () => {
   const [users, setUsers] = useState([]);
   const [cardLayout, setCardLayout] = useState("top");
   const [viewMode, setViewMode] = useState("grid");
   const [selectedUser, setSelectedUser] = useState(null);
   const { fontSize } = useContext(SettingsContext);
-  const handleUpdateUser = (updatedUser) => {
-    setUsers(
-      users.map((user) => (user.id === updatedUser.id ? updatedUser : user)),
-    );
+
+  const handleUpdateUser = async (updatedUser) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/employees/${updatedUser.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedUser),
+        },
+      );
+      if (!response.ok) {
+        throw new Error(`แก้ไขไม่ได้ เพราะ: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data.message);
+
+      setUsers(
+        users.map((user) => (user.id === updatedUser.id ? updatedUser : user)),
+      );
+    } catch (error) {
+      console.error("Error updating user:", error);
+      swal({
+        title: "เกิดข้อผิดพลาด",
+        text: "ไม่สามารถแก้ไขผู้ใช้ได้",
+        icon: "error",
+        timer: 2000,
+        buttons: false,
+      });
+    }
   };
   const [isPending, setIsPending] = useState(false);
   const [isError, setIsError] = useState(null);
@@ -53,14 +81,13 @@ const Home = () => {
         },
       );
 
-      if( !response.ok) {
+      if (!response.ok) {
         throw new Error(`การลบผู้ใช้ล้มเหลว: ${response.status}`);
       }
-       const data = await response.json();
+      const data = await response.json();
       console.log("หลังบ้านตอบกลับว่า : ", data);
       setUsers(users.filter((user) => user.id !== userId));
 
-     
       swal({
         title: "ลบสำเร็จ",
         text: "ลบผู้ใช้เรียบร้อยแล้ว",
@@ -69,7 +96,13 @@ const Home = () => {
         buttons: false,
       });
     } catch (error) {
-      console.log("การลบผิดพลาด :", error);
+      console.log("การลบผิดพลาดจาก console :", error);
+      swal({
+        title: "เกิดข้อผิดพลาด แจ้งเตือนจาก Swal",
+        text: "ไม่สามารถลบผู้ใช้ได้",
+        icon: "error",
+        timer: 2000,
+      });
     }
   };
 
